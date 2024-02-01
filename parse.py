@@ -23,15 +23,28 @@ class Product:
     description: str
     price: float
     rating: int
+    additional_info: dict
+
+
+def parse_hdd_block_prices(product_soup: BeautifulSoup) -> dict[str, float]:
+    # get detailed_url
+    # Driver get this page
+    # Driver find swatches
+    # Driver for each button -> button click (if clickable) -> get price
+    pass
 
 
 def parse_single_product(product_soup: BeautifulSoup) -> Product:
     logger.debug("Parsing product: %s", product_soup)
+
+    hdd_prices = parse_hdd_block_prices(product_soup)
+
     return Product(
         title=product_soup.select_one(".title")["title"],
         description=product_soup.select_one(".description").text,
         price=float(product_soup.select_one(".price").text.replace("$", "")),
         rating=int(product_soup.select_one("p[data-rating]")["data-rating"]),
+        additional_info={"hdd_prices": hdd_prices},
     )
 
 
