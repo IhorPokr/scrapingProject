@@ -1,13 +1,8 @@
 import csv
 from dataclasses import dataclass
 import logging
-from urllib.parse import urljoin
-
 import requests
 from bs4 import BeautifulSoup
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-
 
 BASE_URL = "https://webscraper.io/"
 HOME_URL = BASE_URL + "test-sites/e-commerce/allinone"
@@ -32,24 +27,11 @@ class Product:
 
 
 def parse_hdd_block_prices(product_soup: BeautifulSoup) -> dict[str, float]:
-    detailed_url = urljoin(BASE_URL, product_soup.select_one(".title")["href"])
-    driver = webdriver.Chrome()  # TODO: fix this bad practice - move it to init step
-    driver.get(detailed_url)
-    swatches = driver.find_element(By.CLASS_NAME, "swatches")
-    buttons = swatches.find_elements(By.TAG_NAME, "button")
-
-    prices = {}
-
-    for button in buttons:
-        if not button.get_property("disabled"):
-            button.click()
-            prices[button.get_property("value")] = float(driver.find_element(
-                By.CLASS_NAME, "price"
-            ).text.replace("$", ""))
-
-    driver.close()
-
-    return prices
+    # get detailed_url
+    # Driver get this page
+    # Driver find swatches
+    # Driver for each button -> button click (if clickable) -> get price
+    pass
 
 
 def parse_single_product(product_soup: BeautifulSoup) -> Product:
